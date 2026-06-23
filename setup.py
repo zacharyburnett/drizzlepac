@@ -20,7 +20,10 @@ include_dirs.extend(numpy_includes)
 include_dirs.extend(wcs_includes)
 
 # Setup C module macros
-define_macros = []
+define_macros = [
+    ("NUMPY", "1"),
+    ("Py_LIMITED_API", 0x030B0000),  # PY_VERSION_HEX for 3.11
+]
 
 # Handle MSVC `wcsset` redefinition
 if sys.platform == 'win32':
@@ -37,6 +40,7 @@ ext_modules = [
         glob('src/*.c'),
         include_dirs=include_dirs,
         define_macros=define_macros,
+        py_limited_api=True,
     )
 ]
 
