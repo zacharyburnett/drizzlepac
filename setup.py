@@ -46,4 +46,5 @@ ext_modules = [
 
 setup(
     ext_modules=ext_modules,
+    options={'bdist_wheel': {'py_limited_api': 'cp311'}},
 )
