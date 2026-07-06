@@ -643,7 +643,7 @@ class SkyFootprint(object):
         """Convert the edges into a SphericalPolygon object.
 
         This method converts the sky coordinates of the footprint edges
-        into a ``spherical_geometry.SphericalPolygon`` instance.
+        into a ``sphersgeo.SphericalPolygon`` instance.
 
         The results are saved as the ``polygon`` attribute.
 
@@ -652,9 +652,8 @@ class SkyFootprint(object):
         if self.edges_ra is None:
             self.get_edges_sky(member=member)
 
-        self.polygon = SphericalPolygon.from_radec(self.edges_ra,
-                                                   self.edges_dec,
-                                                   self.meta_wcs.wcs.crval)
+        self.polygon = SphericalPolygon(np.stack((self.edges_ra.degrees,
+                                                  self.edges_dec.degrees), axis=1))
 
     def _get_fits_hdu(self, data, filename=None, overwrite=True):
         hdulist = fits.HDUList()
@@ -978,7 +977,7 @@ class ProjectionCell(object):
 
         inner_pix = self.wcs.pixel_to_world_values(2, 2)
         # define polygon on the sky
-        self.polygon = SphericalPolygon.from_radec(self.corners[:, 0], self.corners[:, 1], inner_pix)
+        self.polygon = SphericalPolygon((self.corners[:, :2], inner_pix))
 
     def find_sky_cells(self, mosaic, nxy=None, overlap=None):
         """Return the sky cell indices from this projection cell that overlap the input footprint"""
@@ -1190,9 +1189,7 @@ class SkyCell(object):
     def build_polygon(self):
         inner_pix = self.wcs.pixel_to_world_values(2, 2)
         # define polygon on the sky
-        self.polygon = SphericalPolygon.from_radec(self.corners[:, 0],
-                                                   self.corners[:, 1],
-                                                   inner_pix)
+        self.polygon = SphericalPolygon((self.corners[:, :2], inner_pix))
     def build_mask(self):
         naxis1, naxis2 = self.wcs.pixel_shape
         edges_x = [0] * naxis2 + [naxis1 - 1] * naxis2 + list(range(naxis1)) * 2

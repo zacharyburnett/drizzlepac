@@ -40,7 +40,7 @@ dependencies = [
     "simplify-polyline",
     "bokeh",
     "pandas",
-    "spherical_geometry>=1.2.22",
+    "sphersgeo>=0.1.0",
     "astroquery>=0.4",
     "astrocut",
     "photutils",
