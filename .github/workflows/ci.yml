@@ -15,14 +15,9 @@ on:
 
 jobs:
   crds_contexts:
-    uses: spacetelescope/crds/.github/workflows/contexts.yml@3e8ce9b857b90890ed31d0731d400344e17ccfb0  # 13.2.5
-  check:
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@e5af21e4ae37af089a73bb032e10b78b0e746174  # v3.0.1
-    with:
-      envs: |
-        - linux: check-style
+    uses: spacetelescope/crds/.github/workflows/contexts.yml@366615246e92e24121ee99f294e57da9c777fcdf  # 14.0.3
   test:
-    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@e5af21e4ae37af089a73bb032e10b78b0e746174  # v3.0.1
+    uses: OpenAstronomy/github-actions-workflows/.github/workflows/tox.yml@1285b95e32c783cfa40eb2ffbd6ca4cd023fb884  # v3.2.2
     needs: [ crds_contexts ]
     with:
       setenv: |
@@ -34,8 +29,8 @@ jobs:
       cache-key: ${{ needs.crds_contexts.outputs.hst }}
       coverage: ''
       envs: |
-        - linux: py311-xdist
-        - macos: py312-xdist
+        - linux: py312-xdist
+        - macos: py313-xdist
           libraries:
             brew:
               - hdf5
